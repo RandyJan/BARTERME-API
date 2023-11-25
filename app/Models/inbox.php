@@ -13,10 +13,11 @@ class inbox extends Model
     protected $table = 'dbo.inbox';
     protected $fillable=[
         'user_id',
-        'conV_id',
+        'conv_id',
         'email_a',
         'email_b',
-        'chatname'
+        'chatname',
+        'chatnameb'
 
     ];
 }

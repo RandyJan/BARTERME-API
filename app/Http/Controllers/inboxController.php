@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\inbox;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,9 @@ if ($response->isEmpty()) {
 $response_b = inbox::insert([
 'email_a' => $request->email_a,
 'email_b' => $request->email_b,
-'user_id' => $request->user_id
+'user_id' => $request->user_id,
+'chatname'=>$request->chatname,
+'chatnameb'=>$request->chatnameb
 ])->get('conv_id');
 
 return response()->json(['data' => $response_b]);
@@ -63,12 +66,23 @@ return response()->json(['data' => $response]);
     {
         $response = inbox::all();
 
+        $imgA = [];
+        $imgB = [];
 
-        return response()->json(
-            ['data'=>$response]
-        );
+        foreach ($response as $item) {
+            $imgA[] = User::where('email', $item->email_a)->value('img');
+            $imgB[] = User::where('email', $item->email_b)->value('img');
+        }
 
+        return response()->json([
+            'data' => $response,
+            'img' => [
+                'img_a' => $imgA,
+                'img_b' => $imgB
+            ]
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.

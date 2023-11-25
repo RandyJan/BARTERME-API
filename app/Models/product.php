@@ -19,7 +19,8 @@ class product extends Model
         'category',
         'image',
         'isTraded',
-        'username'
+        'username',
+        'user_img'
     ];
     public $timestamps = false;
 

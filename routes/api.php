@@ -25,9 +25,11 @@ Route::post('/register',[authController::class,'register'])->name('register');
 Route::post('/login',[authController::class,'login'])->name('login');
 Route::post('/upload',[productController::class,'store'])->name('upload-picture');
 Route::get('/showProducts',[productController::class,'show'])->name('show-products');
-Route::get('/message',[messagingController::class,'show'])->name('message');
+Route::post('/message',[messagingController::class,'show'])->name('message');
 Route::post('/sendMessage',[messagingController::class,'store']);
 Route::get('/inbox',[inboxController::class, 'show']);
 Route::post('/select_conv_id',[inboxController::class,'store'])->name('select-id');
 Route::post('/removeProduct',[productController::class, 'destroy'])->name('remove-product');
-
+Route::post('/bundle',[productController::class, 'bundle']);
+Route::post('/getbundle',[productController::class,'getbundle']);
+Route::post('/trade', [productController::class, 'updatedStatus']);

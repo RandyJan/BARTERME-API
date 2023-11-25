@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\bundle;
 use App\Models\product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class productController extends Controller
 {
@@ -63,7 +65,8 @@ $image = $request['image'];
         'category'=>$request->category,
         'image'=>$image,
         'isTraded'=>0,
-        'username'=>$request->username
+        'username'=>$request->username,
+        'user_img'=> $request->user_img
 
     ]);
     $productdb = product::get('image');
@@ -85,7 +88,11 @@ $image = $request['image'];
      */
     public function show(Request $request)
     {
-            $product = product::where('isTraded', 0)->get();
+            // $product = product::where('isTraded', 0)->get('username')
+            // ->get('email')->get('image')->get('prod_id')
+            // ->get('prod_name')->get('price')->get('desc')
+            // ->get('category')->get('user_img');
+            $product = product::all();
 
             return response()->json(['data'=>$product],200);
 
@@ -119,5 +126,49 @@ $image = $request['image'];
             'Data'=> 'Product deleted successfully'
         ]);
 
+    }
+    public function bundle(Request $request){
+
+        $data = json_decode($request['data'],true);
+        $maxvalue = bundle::max('bundle_id');
+        $bundleid = $maxvalue + 1;
+        Log::info($data);
+
+            $response = bundle::create([
+                'bundle_id'=>$bundleid,
+                'prod_id'=>$data['prod_id'],
+                'user'=>$data['user'],
+                'desc'=>$data['desc'],
+                'prod_name'=>$data['prod_name'],
+                'price'=>$data['price']
+            ]);
+
+
+
+        return response()->json([
+            'data'=>$response
+        ]);
+
+
+    }
+    public function getbundle(Request $request){
+
+        // $bundle = bundle::where('user',$request->user )->select('bundle_id','user','prod_id','price','desc')->get();
+        $bundle = bundle::where('user', $request->user)->get();
+
+        return response()->json([
+            'data'=>$bundle
+        ]);
+    }
+
+    public function updatedStatus(Request $request){
+
+        $response = product::where('prod_id', $request->prod_id)->update([
+            'isTraded'=>1
+        ]);
+
+        return response()->json([
+            'data'=>'product updated successfully'
+        ]);
     }
 }

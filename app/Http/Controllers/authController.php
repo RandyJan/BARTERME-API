@@ -34,6 +34,7 @@ class authController extends Controller
         return response()->json([
             'message'=>'Login Success',
             'data'=>[
+                'img'=>$user->img,
                 'userid'=>$user->id,
                 'name'=> $user->name,
                 'AccessToken'=>$authtoken]
@@ -57,9 +58,13 @@ class authController extends Controller
         $user = User::create([
             'name'=>$request->name,
             'email'=>$request->email,
-            'password'=>bcrypt($request->password)
+            'password'=>bcrypt($request->password),
+            'img'=>$request->img
         ]);
-
+        if(!$user){
+            return response()->json(['message'=>'error',
+        'img'=>$request->img],500);
+        }
         return response()->json([
             'message'=>'Registration successful',
             'data'=>[$user]],200);

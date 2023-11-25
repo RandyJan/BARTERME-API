@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class messagingController extends Controller
 {
@@ -32,7 +34,10 @@ class messagingController extends Controller
             'conv_id'=>$message->conv_id,
             'date'=>$message->date,
             'conv_participant_a'=>$message->email_a,
-            'conv_participant_b'=>$message->email_b
+            'conv_participant_b'=>$message->email_b,
+            'img_a'=>$message->img_a,
+            'img_b'=>$message->img_b,
+            'receiver'=>$message->receiver
         ]);
 
         return response()->json([
@@ -48,11 +53,20 @@ class messagingController extends Controller
      */
     public function show(Request $request)
     {
-        $response = message::all();
+
+        // $result = DB::table('users')
+        //     ->join('conversation', 'users.email', '=', 'conversation.conv_participant_a')
+        //     ->join('conversation', 'users.email', '=', 'conversation.conv_participant_b')
+        //     ->select('users.*', 'conversation.*')
+        //     ->get();
+
+            // er::all();
+        $response = message::where('conv_participant_a', $request->email)->orwhere('conv_participant_b', $request->email)->get();
         if($response){
             return response()->json([
 
-                'data'=>$response]);
+                'data'=>$response,
+                ]);
 
         }
 

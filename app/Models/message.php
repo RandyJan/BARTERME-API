@@ -17,7 +17,10 @@ class message extends Model
         'message',
         'date',
         'conv_participant_a',
-        'conv_participant_b'
+        'conv_participant_b',
+        'img_a',
+        'img_b',
+        'receiver'
     ];
     public $timestamps = false;
 }
