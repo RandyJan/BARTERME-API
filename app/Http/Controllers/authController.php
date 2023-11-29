@@ -34,6 +34,7 @@ class authController extends Controller
         return response()->json([
             'message'=>'Login Success',
             'data'=>[
+                'rating'=>$user->rating,
                 'img'=>$user->img,
                 'userid'=>$user->id,
                 'name'=> $user->name,

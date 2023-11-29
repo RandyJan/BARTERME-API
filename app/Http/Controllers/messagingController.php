@@ -61,7 +61,8 @@ class messagingController extends Controller
         //     ->get();
 
             // er::all();
-        $response = message::where('conv_participant_a', $request->email)->orwhere('conv_participant_b', $request->email)->get();
+        $response = message::where('conv_participant_a', $request->email)
+        ->orwhere('conv_participant_b', $request->email)->get();
         if($response){
             return response()->json([
 

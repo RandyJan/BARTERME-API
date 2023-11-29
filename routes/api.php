@@ -4,6 +4,7 @@ use App\Http\Controllers\authController;
 use App\Http\Controllers\inboxController;
 use App\Http\Controllers\messagingController;
 use App\Http\Controllers\productController;
+use App\Http\Controllers\ratingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,5 @@ Route::post('/removeProduct',[productController::class, 'destroy'])->name('remov
 Route::post('/bundle',[productController::class, 'bundle']);
 Route::post('/getbundle',[productController::class,'getbundle']);
 Route::post('/trade', [productController::class, 'updatedStatus']);
+Route::post('/rate',[ratingController::class, 'store']);
+Route::post('/computeRating',[ratingController::class,'show']);
