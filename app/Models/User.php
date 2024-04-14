@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'id',
         'img',
-        'rating'
+        'rating',
+        'isReported'
     ];
 
     /**

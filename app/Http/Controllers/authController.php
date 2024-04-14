@@ -30,6 +30,10 @@ class authController extends Controller
                 ],422);
         }
         $user = User::where('email',$request->email)->first();
+        if($user->isblock == 1)
+        {
+            return response("error", 401);
+        }
         $authtoken = $user->createToken('auth-token')->plainTextToken;
         return response()->json([
             'message'=>'Login Success',
@@ -38,7 +42,8 @@ class authController extends Controller
                 'img'=>$user->img,
                 'userid'=>$user->id,
                 'name'=> $user->name,
-                'AccessToken'=>$authtoken]
+                'AccessToken'=>$authtoken,
+                'isAdmin'=>$user->isAdmin]
         ],200);
 
     }

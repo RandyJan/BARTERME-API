@@ -20,7 +20,8 @@ class product extends Model
         'image',
         'isTraded',
         'username',
-        'user_img'
+        'user_img',
+        'traded_to'
     ];
     public $timestamps = false;
 

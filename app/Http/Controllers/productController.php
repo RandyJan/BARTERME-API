@@ -76,6 +76,7 @@ $image = $request['image'];
     //     'message'=>'upload successful',
     //     'data'=>$productdb ],200);
     }
+
 }
 
 
@@ -92,7 +93,8 @@ $image = $request['image'];
             // ->get('email')->get('image')->get('prod_id')
             // ->get('prod_name')->get('price')->get('desc')
             // ->get('category')->get('user_img');
-            $product = product::all();
+          
+            $product = product::where('isblock',0)->where('istraded',0)->get();
 
             return response()->json(['data'=>$product],200);
 
@@ -154,7 +156,10 @@ $image = $request['image'];
     public function getbundle(Request $request){
 
         // $bundle = bundle::where('user',$request->user )->select('bundle_id','user','prod_id','price','desc')->get();
-        $bundle = bundle::where('user', $request->user)->get();
+        if($request->user == null || $request->user == ''){
+            return response('Error user is blank');
+        }
+        $bundle = bundle::where('user', $request->user)->where('isblock',0)->get();
 
         return response()->json([
             'data'=>$bundle
@@ -164,11 +169,15 @@ $image = $request['image'];
     public function updatedStatus(Request $request){
 
         $response = product::where('prod_id', $request->prod_id)->update([
-            'isTraded'=>1
+            'isTraded'=>1,
+            'traded_to'=>$request->traded_to
         ]);
 
-        return response()->json([
-            'data'=>'product updated successfully'
-        ]);
+        return response()->json($request->all());
+    }
+    public function deleteProduct(Request $request){
+        $result = product::where('prod_id',$request->prod_id)->delete();
+
+        return response()->json("Product deleted successfuly");
     }
 }
